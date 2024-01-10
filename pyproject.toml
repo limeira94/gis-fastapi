@@ -10,6 +10,9 @@ packages = [{include = "gis_fast"}]
 python = "3.11.*"
 fastapi = "^0.108.0"
 uvicorn = "^0.25.0"
+sqlalchemy = "^2.0.25"
+geoalchemy2 = "^0.14.3"
+pydantic-settings = "^2.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
