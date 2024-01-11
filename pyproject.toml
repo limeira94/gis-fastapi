@@ -13,6 +13,10 @@ uvicorn = "^0.25.0"
 sqlalchemy = "^2.0.25"
 geoalchemy2 = "^0.14.3"
 pydantic-settings = "^2.1.0"
+alembic = "^1.13.1"
+psycopg2 = "^2.9.9"
+httpx = "^0.26.0"
+shapely = "^2.0.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -42,9 +46,9 @@ extend-exclude = '(migrations/)'
 [tool.taskipy.tasks]
 lint = 'ruff . && blue --check . --diff'
 format = 'blue .  && isort .'
-run = 'uvicorn fast_zero.app:app --reload'
+run = 'uvicorn gis_fast.app:app --reload'
 pre_test = 'task lint'
-test = 'pytest -s -x --cov=fast_zero -vv'
+test = 'pytest -s -x --cov=gis_fast -vv'
 post_test = 'coverage html'
 
 [build-system]
