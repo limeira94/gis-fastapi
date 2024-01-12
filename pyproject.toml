@@ -17,6 +17,7 @@ alembic = "^1.13.1"
 psycopg2 = "^2.9.9"
 httpx = "^0.26.0"
 shapely = "^2.0.2"
+python-multipart = "^0.0.6"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,4 +1,5 @@
 import json
+from io import BytesIO
 
 from fastapi.testclient import TestClient
 
@@ -9,18 +10,26 @@ client = TestClient(app)
 
 def test_upload_geo_data():
     geojson_data = {
-        'type': 'Feature',
-        'properties': {},
-        'geometry': {'type': 'Point', 'coordinates': [-23.533773, -46.625290]},
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [-46.625290, -23.533773],
+                },
+                'properties': {'name': 'Sample Point'},
+            }
+        ],
     }
+    geojson_str = json.dumps(geojson_data)
+    geojson_bytes = geojson_str.encode('utf-8')
+    geojson_file = BytesIO(geojson_bytes)
 
-    response = client.post(
-        '/upload/',
-        json={
-            'file_name': 'test.geojson',
-            'geo_data': json.dumps(geojson_data),
-        },
-    )
+    data = {'file': ('test.geojson', geojson_file, 'application/geo+json')}
+    response = client.post('/upload/', files=data)
 
     assert response.status_code == 200
-    assert 'id' in response.json()
+    response_json = response.json()
+    assert 'id' in response_json
+    assert response_json['file_name'] == 'test.geojson'
