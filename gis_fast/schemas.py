@@ -14,9 +14,8 @@ class DataResponse(BaseModel):
 class GeoDataResponse(BaseModel):
     id: int
     file_name: str
-    geo_data:str
-    
+    geo_data: str
+
 
 class UpdateName(BaseModel):
     new_name: str
-    
