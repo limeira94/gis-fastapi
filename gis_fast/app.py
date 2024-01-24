@@ -1,9 +1,8 @@
 import json
 from typing import List
 
-from fastapi import Depends, FastAPI, File, HTTPException, Response, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
-from geoalchemy2 import WKTElement
 from shapely.geometry import shape
 from shapely.wkb import dumps as wkb_dumps
 from shapely.wkb import loads
@@ -19,20 +18,23 @@ app = FastAPI()
 @app.post('/upload/', response_model=DataResponse)
 async def upload_geo_data(
     file: UploadFile = File(...), session: Session = Depends(get_session)
-):  
+):
     try:
         geojson_data = await file.read()
         geojson = json.loads(geojson_data.decode('utf-8'))
-    except Exception as e:
-        raise HTTPException(status_code=400, detail="Invalid file format. The file is not a valid JSON.")
-        
+    except Exception:
+        raise HTTPException(
+            status_code=400,
+            detail='Invalid file format. The file is not a valid JSON.',
+        )
+
     if geojson.get('type') != 'FeatureCollection':
         raise HTTPException(status_code=400, detail='Invalid GeoJSON format')
 
     features = geojson.get('features', [])
     if not features:
         raise HTTPException(status_code=400, detail='No valid features found')
-    
+
     try:
         for feature in features:
             geometry = shape(feature['geometry'])
@@ -51,7 +53,7 @@ async def upload_geo_data(
             content=DataResponse(
                 id=new_data.id, file_name=new_data.file_name
             ).model_dump(),
-            status_code=201
+            status_code=201,
         )
     else:
         raise HTTPException(status_code=400, detail='No valid features found')

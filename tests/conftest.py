@@ -2,6 +2,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from gis_fast.models import GeoData
+
 DATABASE_URL = 'postgresql+psycopg2://postgres:1234@localhost/db-fastgis'
 
 
@@ -17,4 +19,6 @@ def db_session(db_engine):
     )
     session = SessionLocal()
     yield session
+    session.query(GeoData).delete()
+    session.commit()
     session.close()
