@@ -191,3 +191,7 @@ pyrightconfig.json
 .ionide
 database.db
 'database.db' 
+
+data/
+
+postgres/
