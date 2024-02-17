@@ -195,3 +195,5 @@ database.db
 data/
 
 postgres/
+
+fastgis-dockercompose.pem
