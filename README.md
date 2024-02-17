@@ -1,3 +1,4 @@
+**Author: Felipe Limeira da Silva**
 ## API Routes Documentation
 
 This section describes the available API routes in the application, including their functionality, request format, and response structure.
